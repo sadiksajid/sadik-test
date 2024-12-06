@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+    menu:
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: "${WWWGROUP}"
+        image: sail-8.1/app
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        ports:
+            - "${APP_PORT:-80}:80"
+            - "${HMR_PORT:-8080}:8080"
+        environment:
+            WWWUSER: "${WWWUSER}"
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: "${SAIL_XDEBUG_MODE:-off}"
+            XDEBUG_CONFIG: "${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}"
+        volumes:
+            - ".:/var/www/html"
+            - "~/.ssh_docker:/root/.ssh"
+
+        networks:
+        - sail_menu
+networks:
+  sail_menu:
+    name: sail
+    external: true
