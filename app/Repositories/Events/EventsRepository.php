@@ -2,43 +2,72 @@
 
 namespace App\Repositories\Events;
 
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Events\EventsRepositoryInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class EventsRepository implements EventsRepositoryInterface
 {
-    protected Model $model;
-
-    public function __construct(Model $model)
+    /**
+     * Retrieve all events with optional sorting and pagination.
+     *
+     * @param string|null $sort The field to sort by.
+     * @return LengthAwarePaginator The paginated list of events.
+     */
+    public function all(?string $sort = null): LengthAwarePaginator
     {
-        $this->model = $model;
+        $sort = in_array($sort, ['location', 'date']) ? $sort : 'date';
+
+        return Event::orderBy($sort)->paginate(10);
     }
 
-    public function all()
+    /**
+     * Find an event by its ID.
+     *
+     * @param int $id
+     * @return Event
+     */
+    public function find(int $id): Event
     {
-        return $this->model->all();
+        return Event::find($id);
     }
 
-    public function find(int $id)
+    /**
+     * Create a new event.
+     *
+     * @param array $attributes
+     * @return Event
+     */
+    public function create(array $attributes): Event
     {
-        return $this->model->findOrFail($id);
+        return Event::create($attributes);
     }
 
-    public function create(array $attributes)
+    /**
+     * Update an existing event by its ID.
+     *
+     * @param int $id
+     * @param array $attributes
+     * @return Event
+     */
+    public function update(int $id, array $attributes): Event
     {
-        return $this->model->create($attributes);
-    }
-
-    public function update(int $id, array $attributes)
-    {
-        $record = $this->find($id);
+        $record = Event::findOrFail($id);
         $record->update($attributes);
         return $record;
     }
 
-    public function delete(int $id)
+    /**
+     * Delete an event by its ID.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
     {
-        $record = $this->find($id);
+        $record = Event::findOrFail($id);
         $record->delete();
         return true;
     }

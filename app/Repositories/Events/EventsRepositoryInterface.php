@@ -4,7 +4,7 @@ namespace App\Repositories\Events;
 
 interface EventsRepositoryInterface
 {
-    public function all();
+    public function all(string $sort = null);
 
     public function find(int $id);
 

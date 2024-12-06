@@ -6,6 +6,12 @@ use App\Models\Event;
 use App\Http\Requests\ValidationEvent;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+public function __construct(private readonly EventsRepositoryInterface $eventsRepositoryInterface) 
+{
+    //
+}
+
+
 class AdminEventsController extends Controller
 {
     /**
@@ -14,10 +20,11 @@ class AdminEventsController extends Controller
     static function Index()
     {
         $sort = request('sort');
-        $sort = in_array($sort, ['location', 'date']) ? $sort : 'date';
+
+        $events = $this->eventsRepositoryInterface->all($sort);
     
-        $events = Event::when($sort, fn ($query, $sort) => $query->orderBy($sort))
-        ->paginate(10);
+        // $events = Event::when($sort, fn ($query, $sort) => $query->orderBy($sort))
+        // ->paginate(10);
         return view('admin.events.index', compact('events', 'sort'));
     }
 
@@ -35,8 +42,14 @@ class AdminEventsController extends Controller
      */
     static function Store(ValidationEvent $request)
     {
-        Event::create($request->validated());
-        return redirect()->route('admin.events.index')->with('success', 'Event created successfully!');
+        $event = $this->eventsRepositoryInterface->create($request->validated());
+
+        // Event::create($request->validated());
+        if(isset($event->id)){
+            return redirect()->route('admin.events.index')->with('success', 'Event created successfully!');
+        }
+
+        return redirect()->route('admin.events.index')->with('error', 'Event Not Saved!');
     }
 
     /**
@@ -46,7 +59,7 @@ class AdminEventsController extends Controller
      */
     static function Show(int $id)
     {
-        $event = Event::find($id);
+        $event = $this->eventsRepositoryInterface->find($id);
 
         if (!$event) {
             return response()->json(['message' => 'Event not found'], 404);
@@ -61,7 +74,7 @@ class AdminEventsController extends Controller
      */
     static function Edit(int $id)
     {
-        $event = Event::find($id);
+        $event = $this->eventsRepositoryInterface->find($id);
 
         if (!$event) {
             return redirect()->route('admin.events.index')->with('error', 'Event not found!');
@@ -78,13 +91,13 @@ class AdminEventsController extends Controller
      */
     static function Update(ValidationEvent $request,int $id)
     {
-        $event = Event::find($id);
+
+        
+        $event = $this->eventsRepositoryInterface->update($id,$request->validated());
 
         if (!$event) {
             return redirect()->route('admin.events.index')->with('error', 'Event not found!');
         }
-
-        $event->update($request->validated());
 
         return redirect()->route('admin.events.index')->with('success', 'Event updated successfully!');
     }
