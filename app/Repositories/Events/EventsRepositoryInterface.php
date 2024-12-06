@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Repositories\Events;
-
 interface EventsRepositoryInterface
 {
     public function all(string $sort = null);

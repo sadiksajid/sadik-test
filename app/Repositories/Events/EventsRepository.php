@@ -3,10 +3,8 @@
 namespace App\Repositories\Events;
 
 use App\Models\Event;
-use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Events\EventsRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
 
 class EventsRepository implements EventsRepositoryInterface
 {
@@ -27,9 +25,9 @@ class EventsRepository implements EventsRepositoryInterface
      * Find an event by its ID.
      *
      * @param int $id
-     * @return Event
+     * @return Event|null
      */
-    public function find(int $id): Event
+    public function find(int $id): Event|null
     {
         return Event::find($id);
     }
@@ -50,12 +48,17 @@ class EventsRepository implements EventsRepositoryInterface
      *
      * @param int $id
      * @param array $attributes
-     * @return Event
+     * @return Event|null
      */
-    public function update(int $id, array $attributes): Event
+    public function update(int $id, array $attributes): Event|null
     {
-        $record = Event::findOrFail($id);
+        $record = $this->find($id);
+        
+        if (!$record) {
+            return $record;
+        }
         $record->update($attributes);
+
         return $record;
     }
 
@@ -67,7 +70,12 @@ class EventsRepository implements EventsRepositoryInterface
      */
     public function delete(int $id): bool
     {
-        $record = Event::findOrFail($id);
+        $record = $this->find($id);
+
+        if (!$record) {
+            return $record;
+        }
+
         $record->delete();
         return true;
     }

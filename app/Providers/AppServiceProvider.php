@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Events\EventsRepository;
+use App\Repositories\Events\EventsRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(EventsRepositoryInterface::class, EventsRepository::class);
+
     }
 
     /**
