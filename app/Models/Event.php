@@ -15,4 +15,10 @@ class Event extends Model
         'description',
         'rsvp_limit',
     ];
+
+    
+    public function rsvps()
+    {
+        return $this->hasMany(EventRsvp::class);
+    }
 }
