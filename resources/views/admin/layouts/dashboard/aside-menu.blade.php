@@ -1,8 +1,7 @@
     <aside class="app-sidebar  ">
         <div class="app-sidebar__logo">
             <a class="header-brand" href="/dashboard">
-                <img src="/assets/images/svgs/tmb_logo.svg" style='height:4rem' class="header-brand-img desktop-lgo"
-                    alt="sadik test">
+         
 
             </a>
         </div>
