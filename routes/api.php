@@ -1,11 +1,5 @@
 <?php
 
-use App\Models\ServerAccess;
-use Illuminate\Http\Request;
-use App\Http\Controllers\VueAPI;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ShippingCompaniesAPI;
-use App\Http\Controllers\ApiWhatsappController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +14,4 @@ use App\Http\Controllers\ApiWhatsappController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
-Route::middleware('auth:api')->post('/shipping_company_status'    ,[ShippingCompaniesAPI::class, 'CompanyIntegrationStatus']);// good
-Route::middleware('auth:api_server')->post('/get_text_whatsapp' ,[ApiWhatsappController::class, 'ReceiveTextMessages']);// good
-
 

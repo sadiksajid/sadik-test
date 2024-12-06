@@ -60,7 +60,7 @@ return [
      */
 
     'providers' => [
-        'store_admins' => [
+        'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ]

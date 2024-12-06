@@ -28,7 +28,7 @@ class StafAuthController extends Controller
     {
 
         if(Auth::check()){
-            return redirect()->route('staf.products');
+            return redirect()->route('admin.events.index');
         }else{
             return view('auth.login');
         }
@@ -52,7 +52,7 @@ class StafAuthController extends Controller
         }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
-            return redirect()->intended(route('admin.index'));
+            return redirect()->intended(route('admin.events.index'));
         }
 
         return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'These credentials do not match our records.']);

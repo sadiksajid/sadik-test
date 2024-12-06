@@ -7,7 +7,7 @@
         <div class="col-md-6 col-12" style="padding-top: 100px">
             <div class="text-white">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login-post') }}">
                         @csrf
                         <h2 class="display-4 mb-2 font-weight-bold error-text text-center"><strong>Admin Login</strong></h2>
                         <h4 class="text-white-80 mb-7 text-center">Sign In to your admin account</h4>

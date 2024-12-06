@@ -34,10 +34,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:web', 'fw-block-blackl
 Route::group(['middleware' => ['cache.assets', 'fw-block-blacklisted', 'fw-block-attacks', 'web']], function () {
    
     Route::get('/', function () {
-        return redirect()->route('login-form');
+        return redirect()->route('login');
     });
-    Route::get('/Login', [StafAuthController::class, 'showLoginForm'])->name('login-form');
-    Route::post('/login', [StafAuthController::class, 'login'])->name('login');
+    Route::get('/login', [StafAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [StafAuthController::class, 'login'])->name('login-post');
     Route::post('/logout', [StafAuthController::class, 'logout'])->name('logout');
 
 });
